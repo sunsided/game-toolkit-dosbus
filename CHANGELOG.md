@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-08
+
 ### Added
 
 - Add `Pit`, a passive 8253 timer model with BIOS power-on defaults: count and
@@ -38,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add inclusive port ranges, timestamped device I/O, autonomous advancement,
   IRQ levels and DMA request descriptors.
 
-[Unreleased]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/sunsided/game-toolkit-dosbus/compare/03a2908...v0.1.0
