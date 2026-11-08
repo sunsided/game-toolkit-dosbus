@@ -38,15 +38,17 @@ jobs:
             echo "::error::tag $GITHUB_REF_NAME does not match the crate version $crate"
             exit 1
           fi
-          status=$(curl -s -o /dev/null -w '%{http_code}' \
+          status=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors \
             -A "game-toolkit-dosbus release workflow (github.com/sunsided/game-toolkit-dosbus)" \
-            "https://crates.io/api/v1/crates/game-toolkit-dosbus/$crate")
-          if [ "$status" = "200" ]; then
-            echo "::notice::game-toolkit-dosbus $crate is already on crates.io; not publishing"
-            echo "published=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "published=false" >> "$GITHUB_OUTPUT"
-          fi
+            "https://crates.io/api/v1/crates/game-toolkit-dosbus/$crate") || true
+          case "$status" in
+            200)
+              echo "::notice::game-toolkit-dosbus $crate is already on crates.io; not publishing"
+              echo "published=true" >> "$GITHUB_OUTPUT" ;;
+            404) echo "published=false" >> "$GITHUB_OUTPUT" ;;
+            # Anything else (outage, rate limit) is unknown; fail rather than guess.
+            *) echo "::error::crates.io returned HTTP $status for $crate"; exit 1 ;;
+          esac
 
 
       - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
