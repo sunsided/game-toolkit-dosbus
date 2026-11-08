@@ -37,6 +37,15 @@ asserted DRQ and its direction; the DMA controller owns addressing, counts and
 page wrapping. `DmaChannel` validates data channels and derives byte/word width;
 channel 4 is reserved for cascade.
 
+`Pit` is the one device model in the crate: a passive 8253 timer, because the PIT
+is the crystal divided by 12 and every DOS machine needs it. It is a value type,
+not an `IoDevice`. The host routes ports 40h-43h to it, drives channel 2's gate
+from port 61h bit 0, and reads outputs, IRQ 0 timing (`next_irq0`, `irq0_edges`)
+and high time from it. `Pit::channel` returns a `Copy` snapshot of one channel
+for use on another thread, such as speaker synthesis. Keep exactly one `Pit` per
+machine: if a sound device embeds it, route 40h-43h only to that device. Modes 0,
+2 and 3 are modelled; 1, 4 and 5 currently run as mode 3.
+
 This initial crate establishes the shared interfaces. The companion crates still
 need to adopt them; dosvideo's existing clock and speaker are unchanged.
 

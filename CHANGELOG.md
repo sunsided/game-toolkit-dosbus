@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `Pit`, a passive 8253 timer model with BIOS power-on defaults: count and
+  control-word writes, counter latch, lo/hi read flip-flop, channel gates,
+  output levels, high time, and IRQ 0 timing through `irq0_edges` and `next_irq0`.
+  `Pit::channel` returns a `Copy` `ChannelState` snapshot. Modes 0, 2 and 3 are
+  modelled; 6 and 7 alias 2 and 3, and 1, 4 and 5 run as mode 3.
+
 ## [0.1.1] - 2026-11-08
 
 ### Added
