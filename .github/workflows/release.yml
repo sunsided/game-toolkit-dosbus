@@ -87,6 +87,7 @@ jobs:
           awk -v v="$version" '
             /^## \[/ { if (p) exit; if (index($0, "## [" v "]") == 1) { p = 1; next } }
             !p { next }
+            /^\[[^]]+\]: / { exit }
             /^$/ || /^#/ || /^- / { if (buf != "") print buf; buf = $0; if ($0 == "" || /^#/) { print buf; buf = "" }; next }
             { sub(/^ +/, ""); buf = (buf == "" ? $0 : buf " " $0) }
             END { if (buf != "") print buf }
