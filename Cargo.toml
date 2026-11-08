@@ -1,6 +1,6 @@
 [package]
 name = "game-toolkit-dosbus"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.95"
 description = "no_std clock, I/O port, IRQ and DMA interfaces shared by DOS-era PC hardware emulators"

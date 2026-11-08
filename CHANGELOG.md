@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-08
+
 ### Added
 
 - Derive `Hash` for `IrqRequest`, `DmaDirection` and `DmaRequest`, and `PartialOrd`/`Ord`
@@ -28,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add inclusive port ranges, timestamped device I/O, autonomous advancement,
   IRQ levels and DMA request descriptors.
 
-[Unreleased]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/sunsided/game-toolkit-dosbus/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/sunsided/game-toolkit-dosbus/compare/03a2908...v0.1.0
