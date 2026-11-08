@@ -1,0 +1,66 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  build:
+    desc: Build all targets
+    cmds:
+      - cargo build --all-targets --locked {{.CLI_ARGS}}
+
+  test:
+    desc: Run tests and doctests
+    cmds:
+      - cargo test --locked {{.CLI_ARGS}}
+
+  check:
+    desc: Check formatting, lints, documentation and the wasm target
+    cmds:
+      - cargo fmt --all --check
+      - cargo clippy --all-targets --locked -- -D warnings
+      - task: docs
+      - cargo check --lib --target wasm32-unknown-unknown --locked
+
+  docs:
+    desc: Build documentation with warnings denied
+    env:
+      RUSTDOCFLAGS: '-D warnings'
+    cmds:
+      - cargo doc --no-deps --locked {{.CLI_ARGS}}
+
+  ci:
+    desc: Run checks, tests and package verification
+    cmds:
+      - task: check
+      - task: test
+      - cargo package --locked {{.CLI_ARGS}}
+
+  lint:actions:
+    desc: Lint the GitHub workflows (actionlint, zizmor)
+    preconditions:
+      - sh: command -v actionlint
+        msg: "actionlint not found - go install github.com/rhysd/actionlint/cmd/actionlint@latest"
+      - sh: command -v zizmor
+        msg: "zizmor not found - pipx install zizmor (or: cargo install zizmor)"
+    cmds:
+      - actionlint -color
+      - zizmor --format plain .github
+
+  publish:dry:
+    desc: Package the crate and build it from the package, without uploading
+    cmds:
+      - cargo publish --dry-run --locked {{.CLI_ARGS}}
+
+  release:
+    desc: "Bump the version, stamp CHANGELOG.md, commit, tag and push (VERSION=x.y.z); CI publishes"
+    requires:
+      vars: [VERSION]
+    preconditions:
+      - sh: command -v cargo-release
+        msg: "cargo-release not found - cargo install cargo-release --locked"
+    prompt: "Release {{.VERSION}}: bump, commit, tag v{{.VERSION}} and push?"
+    cmds:
+      - cargo release {{.VERSION}} --execute --no-publish
