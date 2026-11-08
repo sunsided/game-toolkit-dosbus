@@ -4,7 +4,7 @@ use core::time::Duration;
 /// An instant or duration in cycles of the PC's 315/22 MHz crystal.
 ///
 /// One cycle is exactly 22/315 microseconds. PIT input cycles span 12 ticks;
-/// an OPL native sample spans 288 ticks. Conversions round down to whole ticks.
+/// an OPL native sample spans 288 ticks. Integer conversions round down to whole ticks.
 /// For repeated charges, use [`TickAccumulator`] to retain the fractional part.
 ///
 /// Arithmetic panics on overflow or subtraction below zero in all build profiles.
@@ -58,15 +58,17 @@ impl Tick {
         }
     }
 
-    /// Convert approximate floating-point seconds, rounding down.
+    /// Convert approximate floating-point seconds, rounding to the nearest tick.
     ///
+    /// Rounding makes `Tick::from_secs_f64(t.as_secs_f64()) == t` despite float error.
     /// Prefer [`Self::from_duration`] when exact integer conversion matters.
     ///
     /// # Panics
     /// Panics for negative, non-finite or out-of-range input.
     pub fn from_secs_f64(seconds: f64) -> Self {
         assert!(seconds.is_finite() && seconds >= 0.0, "invalid seconds");
-        let ticks = seconds * Self::HZ_NUMERATOR as f64 / Self::HZ_DENOMINATOR as f64;
+        // `f64::round` needs std; adding 0.5 before truncation rounds nonnegative values.
+        let ticks = seconds * Self::HZ_NUMERATOR as f64 / Self::HZ_DENOMINATOR as f64 + 0.5;
         // u64::MAX as f64 rounds up to 2^64, the exclusive upper bound.
         assert!(ticks < u64::MAX as f64, "seconds exceed Tick::MAX");
         Self(ticks as u64)
@@ -89,7 +91,7 @@ impl Tick {
 
     /// Approximate nanoseconds, for compatibility with older device interfaces.
     pub fn as_nanos_f64(self) -> f64 {
-        self.as_secs_f64() * 1_000_000_000.0
+        self.0 as f64 * (Self::HZ_DENOMINATOR * 1_000_000_000) as f64 / Self::HZ_NUMERATOR as f64
     }
 
     /// Add a duration, returning `None` on overflow.

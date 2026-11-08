@@ -114,6 +114,13 @@ fn zero_source_frequency_is_rejected() {
 }
 
 #[test]
+fn floating_point_seconds_round_trip() {
+    for ticks in 0..100_000 {
+        assert_eq!(Tick::from_secs_f64(Tick(ticks).as_secs_f64()), Tick(ticks));
+    }
+}
+
+#[test]
 fn invalid_floating_point_times_are_rejected() {
     for value in [-1.0, f64::NAN, f64::INFINITY, f64::NEG_INFINITY, f64::MAX] {
         assert!(std::panic::catch_unwind(|| Tick::from_secs_f64(value)).is_err());

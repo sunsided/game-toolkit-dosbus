@@ -1,5 +1,5 @@
 /// A nonempty inclusive range of 16-bit I/O ports.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct PortRange {
     start: u16,
     end: u16,

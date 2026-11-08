@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Derive `Hash` for `IrqRequest`, `DmaDirection` and `DmaRequest`, and `PartialOrd`/`Ord`
+  for `IrqLine`, `DmaChannel` and `PortRange`.
+
+### Fixed
+
+- `Tick::from_secs_f64` rounds to the nearest tick, so it round-trips `Tick::as_secs_f64`
+  instead of sometimes losing a tick to float error.
+- `Tick::as_nanos_f64` converts in one step instead of rounding twice.
+
 ## [0.1.0] - 2026-11-08
 
 ### Added

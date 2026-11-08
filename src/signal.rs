@@ -2,7 +2,7 @@
 ///
 /// Includes IRQ 2, the AT cascade line; machine-specific reservations belong to
 /// the host's interrupt controller.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct IrqLine(u8);
 
 impl IrqLine {
@@ -21,7 +21,7 @@ impl IrqLine {
 ///
 /// Repeated observation is not acknowledgement. The host's PIC decides how a
 /// level becomes an interrupt; the device's own I/O protocol clears its source.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct IrqRequest {
     /// The configured interrupt line.
     pub line: IrqLine,
@@ -41,7 +41,7 @@ pub enum DmaWidth {
 /// An ISA DMA data channel: 0 through 3 or 5 through 7.
 ///
 /// Channel 4 cascades the two AT DMA controllers and cannot transfer device data.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct DmaChannel(u8);
 
 impl DmaChannel {
@@ -69,7 +69,7 @@ impl DmaChannel {
 }
 
 /// Direction of a DMA transfer, named from the device's perspective.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum DmaDirection {
     /// The controller reads memory and delivers data to the device.
     MemoryToDevice,
@@ -82,7 +82,7 @@ pub enum DmaDirection {
 /// The host's DMA controller owns address, count, page wrapping, masking and
 /// terminal-count behavior. This descriptor only reports the device's request;
 /// it neither performs nor acknowledges a transfer.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct DmaRequest {
     /// DMA channel configured for this device.
     pub channel: DmaChannel,
