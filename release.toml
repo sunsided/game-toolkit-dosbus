@@ -18,8 +18,7 @@
 #
 # Dry-run by dropping --execute; `task publish:dry` packages and verifies without uploading.
 
-# One commit and one `vX.Y.Z` tag.
-consolidate-commits = true
+# One `vX.Y.Z` tag.
 tag-name = "v{{version}}"
 pre-release-commit-message = "Release {{version}}"
 
