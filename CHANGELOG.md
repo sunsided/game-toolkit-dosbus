@@ -14,3 +14,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   between CPU-cycle or audio-frame charges with `TickAccumulator`.
 - Add inclusive port ranges, timestamped device I/O, autonomous advancement,
   IRQ levels and DMA request descriptors.
+
+[Unreleased]: https://github.com/sunsided/game-toolkit-dosbus/compare/03a2908...HEAD
